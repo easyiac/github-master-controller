@@ -21,7 +21,7 @@ async function makeGitHubProvider(vaultSourceProvider: pulumiVault.Provider): Pr
 export async function createArpanrecGitHubRepo(vaultSourceProvider: pulumiVault.Provider) {
     const defaultRepoOptions: GitHubRepoOptions = {
         description: 'This is the default repository',
-        visibility: 'private',
+        visibility: 'public',
         archived: false,
         hasIssues: true,
         hasProjects: true,
