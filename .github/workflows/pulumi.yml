@@ -27,6 +27,9 @@ jobs:
             - name: Create environment file
               run: |
                   set -e
+                  echo ${{ github.environment }}
+                  echo repo = ${{ github.repository }}
+
                   echo -n "${ROOT_CA_CERTIFICATE_CONTENT_BASE64}" |
                       base64 -d | tee /tmp/vault-ca.crt >/dev/null
                   echo -n "${VAULT_CLIENT_PRIVATE_KEY_CONTENT_BASE64}" |
