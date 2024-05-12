@@ -1,31 +1,31 @@
-import * as pulumiVault from '@pulumi/vault';
-import * as pulumiGitHub from '@pulumi/github';
+import * as vault from '@pulumi/vault';
+import * as github from '@pulumi/github';
 import * as pulumi from '@pulumi/pulumi';
 import { GitHubRepoOptions, createGitRepo } from './utils/github-repo.js';
 
 const owner = 'arpanrec';
 
-async function makeGitHubProvider(vaultSourceProvider: pulumiVault.Provider): Promise<pulumiGitHub.Provider> {
-    const arpanrecGitHubKV2 = await pulumiVault.kv.getSecretV2(
+async function makeGitHubProvider(vaultSourceProvider: vault.Provider): Promise<pulumiGitHub.Provider> {
+    const arpanrecGitHubKV2 = await vault.kv.getSecretV2(
         {
             name: 'external_services/github',
             mount: 'secret',
         },
         { provider: vaultSourceProvider }
     );
-    return new pulumiGitHub.Provider(owner + 'github-provider', {
+    return new github.Provider(owner + 'github-provider', {
         owner: owner,
         token: arpanrecGitHubKV2.data.GH_PROD_API_TOKEN,
     });
 }
 
-export async function createArpanrecGitHubRepo(vaultSourceProvider: pulumiVault.Provider) {
+export async function createArpanrecGitHubRepo(vaultSourceProvider: vault.Provider) {
     const vaultHost = vaultSourceProvider.address.apply((addr) => {
         const url = new URL(addr);
         return url.hostname;
     });
 
-    const vaultClientSecret = new pulumiVault.pkisecret.SecretBackendCert(
+    const vaultClientSecret = new vault.pkisecret.SecretBackendCert(
         `vault-github-client-cert-${owner}`,
         {
             backend: 'pki',
@@ -51,7 +51,7 @@ export async function createArpanrecGitHubRepo(vaultSourceProvider: pulumiVault.
         return vaultClientKeyPemBase64;
     });
 
-    const approleSecretID = new pulumiVault.approle.AuthBackendRoleSecretId(
+    const approleSecretID = new vault.approle.AuthBackendRoleSecretId(
         `vault-github-approle-${owner}`,
         {
             backend: 'approle',
@@ -65,7 +65,7 @@ export async function createArpanrecGitHubRepo(vaultSourceProvider: pulumiVault.
         }
     );
 
-    const roleID = await pulumiVault.approle.getAuthBackendRoleId(
+    const roleID = await vault.approle.getAuthBackendRoleId(
         {
             backend: 'approle',
             roleName: 'github-master-controller',

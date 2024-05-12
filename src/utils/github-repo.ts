@@ -1,5 +1,5 @@
-import * as pulumiGitHub from '@pulumi/github';
-import { Output, OutputInstance } from '@pulumi/pulumi';
+import * as github from '@pulumi/github';
+import * as pulumi from '@pulumi/pulumi';
 
 export type GitHubRepoOptions = {
     description?: string;
@@ -18,16 +18,16 @@ export type GitHubRepoOptions = {
     topics?: string[];
     defaultBranch?: string;
     licenseTemplate?: string;
-    actionSecrets: Record<string, Output<string>>;
+    actionSecrets: Record<string, pulumi.Output<string>>;
     allowAutoMerge?: boolean;
 };
 
 export function createGitRepo(
     repositoryName: string,
     options: GitHubRepoOptions,
-    provider: pulumiGitHub.Provider,
+    provider: github.Provider,
     owner: string
-): pulumiGitHub.Repository {
+): github.Repository {
     let description = options.description || '';
     let visibility = options.visibility || 'public';
     let archived = options.archived || false;
@@ -47,7 +47,7 @@ export function createGitRepo(
     let actionSecrets = options.actionSecrets || {};
     let allowAutoMerge = options.allowAutoMerge || false;
 
-    const gitHubRepo = new pulumiGitHub.Repository(
+    const gitHubRepo = new github.Repository(
         `repository-${owner}-${repositoryName}`,
         {
             name: repositoryName,
@@ -86,7 +86,7 @@ export function createGitRepo(
         });
         console.log('Main branch found: ' + mainBranchFound);
         if (!mainBranchFound) {
-            new pulumiGitHub.Branch(
+            new github.Branch(
                 `branch-${owner}-${repositoryName}-${defaultBranch}`,
                 {
                     repository: gitHubRepo.name,
@@ -99,7 +99,7 @@ export function createGitRepo(
         }
     });
 
-    const defaultBranchResource = new pulumiGitHub.BranchDefault(
+    const defaultBranchResource = new github.BranchDefault(
         `default-branch-${owner}-${repositoryName}-${defaultBranch}`,
         {
             repository: gitHubRepo.name,
@@ -110,7 +110,7 @@ export function createGitRepo(
         }
     );
 
-    new pulumiGitHub.BranchProtection(
+    new github.BranchProtection(
         `branch-protection-${owner}-${repositoryName}-${defaultBranch}`,
         {
             repositoryId: gitHubRepo.nodeId,
@@ -137,7 +137,7 @@ export function createGitRepo(
         }
     );
 
-    new pulumiGitHub.BranchProtection(
+    new github.BranchProtection(
         `branch-protection-${owner}-${repositoryName}-backup`,
         {
             repositoryId: gitHubRepo.nodeId,
@@ -152,7 +152,7 @@ export function createGitRepo(
 
     if (Object.keys(actionSecrets).length > 0) {
         Object.keys(actionSecrets).forEach((key) => {
-            new pulumiGitHub.ActionsSecret(
+            new github.ActionsSecret(
                 `action-secret-${owner}-${repositoryName}-${key}`,
                 {
                     repository: gitHubRepo.name,
