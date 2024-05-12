@@ -49,6 +49,6 @@ jobs:
             - uses: pulumi/actions@v5
               with:
                   command: preview
-                  stack-name: arpanrec/github-master-controller/production
+                  stack-name: arpanrec/production
               env:
-                 PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_PROD_PAT }} # steps.import-secrets.outputs.PULUMI_PROD_PAT
+                  PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_PROD_PAT }} # steps.import-secrets.outputs.PULUMI_PROD_PAT
