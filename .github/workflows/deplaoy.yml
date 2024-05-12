@@ -5,7 +5,7 @@ name: Pulumi
     pull_request:
     workflow_dispatch:
 jobs:
-    pulumi:
+    deplaoy-pulumi:
         runs-on: ubuntu-latest
         environment: production
         steps:
