@@ -38,7 +38,7 @@ jobs:
                   set -ex
                   git config --global user.email "${{ steps.import-gpg.outputs.email }}"
                   git config --global user.name "${{ steps.import-gpg.outputs.name }}"
-                  npx semantic-release@23.0.8 --extends ./.github/files/release.config.cjs
+                  npx semantic-release@23.0.8
               env:
                   GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
                   GIT_AUTHOR_NAME: "${{ steps.import-gpg.outputs.name }}"
