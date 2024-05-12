@@ -18,7 +18,7 @@ export type GitHubRepoOptions = {
     topics?: string[];
     defaultBranch?: string;
     licenseTemplate?: string;
-    actionSecrets?: Record<string, Output<string> | OutputInstance<void> | string>;
+    actionSecrets: Record<string, Output<string>>;
     allowAutoMerge?: boolean;
 };
 
@@ -157,6 +157,7 @@ export function createGitRepo(
                 {
                     repository: gitHubRepo.name,
                     secretName: key,
+                    plaintextValue: actionSecrets[key],
                 },
                 {
                     provider: provider,

@@ -1,6 +1,6 @@
 import * as pulumiVault from '@pulumi/vault';
 import * as pulumiGitHub from '@pulumi/github';
-import { Output, OutputInstance } from '@pulumi/pulumi';
+import * as pulumi from '@pulumi/pulumi';
 import { GitHubRepoOptions, createGitRepo } from './utils/github-repo.js';
 
 const owner = 'arpanrec';
@@ -39,7 +39,7 @@ export async function createArpanrecGitHubRepo(vaultSourceProvider: pulumiVault.
 
     const vaultClientCertPemBase64 = vaultClientSecret.certificate.apply((certificate) => {
         certificate = certificate;
-        vaultClientSecret.caChain.apply((caChain) => {
+        return vaultClientSecret.caChain.apply((caChain) => {
             const vaultClientCertPem = `${certificate}\n${caChain}`;
             const vaultClientCertPemBase64 = Buffer.from(vaultClientCertPem, 'binary').toString('base64');
             console.log(vaultClientCertPemBase64);
@@ -76,12 +76,12 @@ export async function createArpanrecGitHubRepo(vaultSourceProvider: pulumiVault.
         }
     );
 
-    const actionSecrets: Record<string, Output<string> | OutputInstance<void> | string> = {
+    const actionSecrets: Record<string, pulumi.Output<string>> = {
         VAULT_ADDR: vaultSourceProvider.address,
         VAULT_CLIENT_CERTIFICATE_CONTENT_BASE64: vaultClientCertPemBase64,
         VAULT_CLIENT_PRIVATE_KEY_CONTENT_BASE64: vaultClientKeyPemBase64,
         VAULT_APPROLE_SECRET_ID: approleSecretID.secretId,
-        VAULT_APPROLE_ROLE_ID: roleID.roleId,
+        VAULT_APPROLE_ROLE_ID: pulumi.output(roleID.roleId),
         ROOT_CA_CERTIFICATE_CONTENT_BASE64: vaultClientCertPemBase64,
     };
 
