@@ -1,4 +1,4 @@
-name: github_master_controller
+name: github-master-controller
 runtime:
     name: nodejs
     options:

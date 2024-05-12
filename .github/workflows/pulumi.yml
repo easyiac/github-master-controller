@@ -1,0 +1,58 @@
+---
+name: Pulumi
+"on":
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+jobs:
+    pulumi:
+        runs-on: ubuntu-latest
+        environment: production
+        steps:
+            - uses: actions/checkout@v4
+            - name: Import Secrets
+              id: import-secrets
+              uses: hashicorp/vault-action@v3
+              with:
+                  url: "${{secrets.VAULT_ADDR}}"
+                  caCertificate: ${{ secrets.ROOT_CA_CERTIFICATE_CONTENT_BASE64 }}
+                  clientKey: ${{ secrets.VAULT_CLIENT_PRIVATE_KEY_CONTENT_BASE64 }}
+                  clientCertificate: ${{ secrets.VAULT_CLIENT_CERTIFICATE_CONTENT_BASE64 }}
+                  method: approle
+                  roleId: ${{ secrets.VAULT_APPROLE_ROLE_ID }}
+                  secretId: ${{ secrets.VAULT_APPROLE_SECRET_ID }}
+                  secrets: |
+                      secret/data/external_services/pulumi PULUMI_PROD_PAT | PULUMI_PROD_PAT ;
+
+            - name: Create environment file
+              run: |
+                  echo -n "${ROOT_CA_CERTIFICATE_CONTENT_BASE64}" |
+                      base64 -d | tee /tmp/vault-ca.crt >/dev/null
+                  echo -n "${VAULT_CLIENT_PRIVATE_KEY_CONTENT_BASE64}" |
+                      base64 -d | tee /tmp/vault-key.crt >/dev/null
+                  echo -n "${VAULT_CLIENT_CERTIFICATE_CONTENT_BASE64}" |
+                      base64 -d | tee /tmp/vault-cert.crt >/dev/null
+
+                  echo "VAULT_ADDR=${VAULT_ADDR}" | tee .env >/dev/null
+                  echo "VAULT_APPROLE_ROLE_ID=${VAULT_APPROLE_ROLE_ID}" | tee -a .env >/dev/null
+                  echo "VAULT_APPROLE_SECRET_ID=${VAULT_APPROLE_SECRET_ID}" | tee -a .env >/dev/null
+                  echo "VAULT_CLIENT_CERTIFICATE=/tmp/vault-cert.crt" | tee -a .env >/dev/null
+                  echo "VAULT_CLIENT_PRIVATE_KEY=/tmp/vault-key.crt" | tee -a .env >/dev/null
+                  echo "ROOT_CA_CERTIFICATE=/tmp/vault-ca.crt" | tee -a .env >/dev/null
+              env:
+                  ROOT_CA_CERTIFICATE_CONTENT_BASE64: ${{ secrets.ROOT_CA_CERTIFICATE_CONTENT_BASE64 }}
+                  VAULT_CLIENT_PRIVATE_KEY_CONTENT_BASE64: ${{ secrets.VAULT_CLIENT_PRIVATE_KEY_CONTENT_BASE64 }}
+                  VAULT_CLIENT_CERTIFICATE_CONTENT_BASE64: ${{ secrets.VAULT_CLIENT_CERTIFICATE_CONTENT_BASE64 }}
+                  VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+                  VAULT_APPROLE_ROLE_ID: ${{ secrets.VAULT_APPROLE_ROLE_ID }}
+                  VAULT_APPROLE_SECRET_ID: ${{ secrets.VAULT_APPROLE_SECRET_ID }}
+
+            - uses: pulumi/actions@v5
+              with:
+                  command: preview
+                  stack-name: arpanrec/github-master-controller/production
+              env:
+                  PULUMI_ACCESS_TOKEN: ${{ steps.import-secrets.outputs.PULUMI_PROD_PAT }}
