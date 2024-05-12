@@ -21,6 +21,8 @@ jobs:
                   method: approle
                   roleId: ${{ secrets.VAULT_APPROLE_ROLE_ID }}
                   secretId: ${{ secrets.VAULT_APPROLE_SECRET_ID }}
+                  exportEnv: false
+                  exportToken: false
                   secrets: |
                       secret/data/external_services/pulumi PULUMI_PROD_PAT | PULUMI_PROD_PAT ;
 
@@ -51,7 +53,7 @@ jobs:
             - name: Create Pulumi stack
               run: |+
                   npm install
-                  pulumi stack init arpanrec/github-master-controller/production
+                  pulumi stack init arpanrec/github-master-controller/production || true
               env:
                   PULUMI_ACCESS_TOKEN: ${{ steps.import-secrets.outputs.PULUMI_PROD_PAT }}
 
