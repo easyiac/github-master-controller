@@ -5,7 +5,7 @@ import { GitHubRepoOptions, createGitRepo } from './utils/github-repo.js';
 
 const owner = 'arpanrec';
 
-async function makeGitHubProvider(vaultSourceProvider: vault.Provider): Promise<pulumiGitHub.Provider> {
+async function makeGitHubProvider(vaultSourceProvider: vault.Provider): Promise<github.Provider> {
     const arpanrecGitHubKV2 = await vault.kv.getSecretV2(
         {
             name: 'external_services/github',
