@@ -37,6 +37,7 @@ jobs:
             - name: Release
               run: |+
                   set -ex
+                  npm i
                   git config --global user.email "${{ steps.import-gpg.outputs.email }}"
                   git config --global user.name "${{ steps.import-gpg.outputs.name }}"
                   npx semantic-release@23.0.8
