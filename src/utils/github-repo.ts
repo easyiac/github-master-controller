@@ -111,7 +111,7 @@ export function createGitRepo(
     );
 
     new pulumiGitHub.BranchProtection(
-        owner + '-' + repositoryName + '-backup-' + '-branch-protection',
+        owner + '-' + repositoryName + '-backup-branch-protection',
         {
             repositoryId: gitHubRepo.nodeId,
             pattern: 'backup/**',
