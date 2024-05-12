@@ -27,7 +27,7 @@ jobs:
             - name: Create environment file
               run: |
                   set -e
-                  echo ${{ github.environment }}
+                  echo env = ${{ github.env }}
                   echo repo = ${{ github.repository }}
                   env
 
@@ -51,13 +51,6 @@ jobs:
                   VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
                   VAULT_APPROLE_ROLE_ID: ${{ secrets.VAULT_APPROLE_ROLE_ID }}
                   VAULT_APPROLE_SECRET_ID: ${{ secrets.VAULT_APPROLE_SECRET_ID }}
-
-            - name: In order to use the Pulumi v2 action, we need to setup the Pulumi
-                  project specific language environment
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "20"
-                  cache: "npm"
 
             - name: After setting up the Pulumi project specific language environment,
                   we need to install the dependencies also
