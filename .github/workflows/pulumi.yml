@@ -3,6 +3,7 @@ name: Pulumi
 "on":
     push:
     pull_request:
+    workflow_dispatch:
 jobs:
     pulumi:
         runs-on: ubuntu-latest
