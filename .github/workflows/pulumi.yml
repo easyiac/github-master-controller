@@ -27,10 +27,6 @@ jobs:
             - name: Create environment file
               run: |
                   set -e
-                  cat ${{ github.env }}
-                  echo env = ${{ github.env }}
-                  echo repo = ${{ github.repository }}
-                  env
 
                   echo -n "${ROOT_CA_CERTIFICATE_CONTENT_BASE64}" |
                       base64 -d | tee /tmp/vault-ca.crt >/dev/null
@@ -66,3 +62,11 @@ jobs:
                   stack-name: arpanrec/production
               env:
                   PULUMI_ACCESS_TOKEN: ${{ steps.import-secrets.outputs.PULUMI_PROD_PAT }}
+
+            - uses: pulumi/actions@v5
+              with:
+                  command: up
+                  stack-name: arpanrec/production
+              env:
+                  PULUMI_ACCESS_TOKEN: ${{ steps.import-secrets.outputs.PULUMI_PROD_PAT }}
+              if: github.base_ref == 'refs/heads/main'
