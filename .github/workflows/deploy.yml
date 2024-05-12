@@ -5,7 +5,8 @@ name: Deplay Pulumi
     pull_request:
     workflow_dispatch:
 jobs:
-    deplay-pulumi:
+    deplay-pulumi-github-actions-job:
+        name: deplay-pulumi-github-actions-job
         runs-on: ubuntu-latest
         environment: production
         steps:
