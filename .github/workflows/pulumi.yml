@@ -48,6 +48,13 @@ jobs:
             - name: Install Pulumi CLI
               uses: pulumi/action-install-pulumi-cli@v2
 
+            - name: Create Pulumi stack
+              run: |+
+                  npm install
+                  pulumi stack init arpanrec/github-master-controller/production
+              env:
+                  PULUMI_ACCESS_TOKEN: ${{ steps.import-secrets.outputs.PULUMI_PROD_PAT }}
+
             - name: Pulumi preview
               uses: pulumi/actions@v5
               with:
