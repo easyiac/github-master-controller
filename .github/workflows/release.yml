@@ -5,6 +5,7 @@ name: Release
 
 jobs:
     release:
+        environment: production
         permissions:
             contents: write
             issues: write
