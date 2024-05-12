@@ -1,11 +1,11 @@
 ---
-name: Pulumi
+name: Deplay Pulumi
 "on":
     push:
     pull_request:
     workflow_dispatch:
 jobs:
-    deplaoy-pulumi:
+    deplay-pulumi:
         runs-on: ubuntu-latest
         environment: production
         steps:
