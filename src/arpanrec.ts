@@ -30,7 +30,7 @@ export async function createArpanrecGitHubRepo(vaultSourceProvider: pulumiVault.
         allowMergeCommit: false,
         allowRebaseMerge: false,
         allowSquashMerge: true,
-        autoInit: true,
+        autoInit: false,
         deleteBranchOnMerge: true,
         gitignoreTemplate: 'Node',
         topics: ['pulumi-managed'],

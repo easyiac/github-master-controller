@@ -34,7 +34,7 @@ export function createGitRepo(
     let allowMergeCommit = options.allowMergeCommit || false;
     let allowRebaseMerge = options.allowRebaseMerge || false;
     let allowSquashMerge = options.allowSquashMerge || true;
-    let autoInit = options.autoInit || true;
+    let autoInit = options.autoInit || false;
     let deleteBranchOnMerge = options.deleteBranchOnMerge || true;
     let gitignoreTemplate = options.gitignoreTemplate || 'Node';
     let topics = options.topics || [];
