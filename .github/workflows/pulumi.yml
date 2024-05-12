@@ -49,6 +49,15 @@ jobs:
                   VAULT_APPROLE_ROLE_ID: ${{ secrets.VAULT_APPROLE_ROLE_ID }}
                   VAULT_APPROLE_SECRET_ID: ${{ secrets.VAULT_APPROLE_SECRET_ID }}
 
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+                  cache: "npm"
+
+            - name: After setting up the Pulumi project specific language environment,
+                  we need to install the dependencies also
+              run: npm install
+
             - name: Install Pulumi CLI
               uses: pulumi/action-install-pulumi-cli@v2
 
