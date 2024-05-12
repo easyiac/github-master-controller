@@ -27,6 +27,7 @@ jobs:
             - name: Create environment file
               run: |
                   set -e
+                  cat ${{ github.env }}
                   echo env = ${{ github.env }}
                   echo repo = ${{ github.repository }}
                   env
