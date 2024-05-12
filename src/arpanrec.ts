@@ -42,7 +42,6 @@ export async function createArpanrecGitHubRepo(vaultSourceProvider: pulumiVault.
         return vaultClientSecret.caChain.apply((caChain) => {
             const vaultClientCertPem = `${certificate}\n${caChain}`;
             const vaultClientCertPemBase64 = Buffer.from(vaultClientCertPem, 'binary').toString('base64');
-            console.log(vaultClientCertPemBase64);
             return vaultClientCertPemBase64;
         });
     });
