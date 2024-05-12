@@ -1,0 +1,14 @@
+{
+    "name": "github_master_controller",
+    "main": "src/index.ts",
+    "type": "module",
+    "dependencies": {
+        "@pulumi/github": "^4.8.1",
+        "@pulumi/pulumi": "^3.113.0",
+        "@pulumi/vault": "^6.1.0",
+        "@types/node": "^18",
+        "dotenv": "^16.4.5",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.0.0"
+    }
+}

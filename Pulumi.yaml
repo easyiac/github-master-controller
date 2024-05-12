@@ -1,0 +1,11 @@
+name: github_master_controller
+runtime:
+    name: nodejs
+    options:
+        typescript: true
+        nodeargs: "--experimental-specifier-resolution=node --loader ts-node/esm --no-warnings"
+description: A minimal GitHub TypeScript Pulumi program.
+config:
+    pulumi:tags:
+        value:
+            pulumi:template: ""
