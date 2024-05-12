@@ -74,4 +74,4 @@ jobs:
                   stack-name: arpanrec/production
               env:
                   PULUMI_ACCESS_TOKEN: ${{ steps.import-secrets.outputs.PULUMI_PROD_PAT }}
-              if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
+              if: github.ref == 'refs/heads/main'
