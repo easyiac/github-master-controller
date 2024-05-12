@@ -29,6 +29,7 @@ jobs:
                   set -e
                   echo ${{ github.environment }}
                   echo repo = ${{ github.repository }}
+                  env
 
                   echo -n "${ROOT_CA_CERTIFICATE_CONTENT_BASE64}" |
                       base64 -d | tee /tmp/vault-ca.crt >/dev/null
