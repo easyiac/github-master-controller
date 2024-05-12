@@ -50,7 +50,7 @@ jobs:
 
             - name: In order to use the Pulumi v2 action, we need to setup the Pulumi
                   project specific language environment
-              uses: actions/setup-node@v2
+              uses: actions/setup-node@v4
               with:
                   node-version: "20"
                   cache: "npm"
@@ -60,7 +60,7 @@ jobs:
               run: npm install
 
             - name: Install Pulumi CLI
-              uses: pulumi/action-install-pulumi-cli@v1.0.1
+              uses: pulumi/action-install-pulumi-cli@v2
 
             - uses: pulumi/actions@v5
               with:
