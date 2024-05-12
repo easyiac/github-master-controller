@@ -2,11 +2,7 @@
 name: Pulumi
 "on":
     push:
-        branches:
-            - main
     pull_request:
-        branches:
-            - main
 jobs:
     pulumi:
         runs-on: ubuntu-latest
