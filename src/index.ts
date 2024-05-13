@@ -1,6 +1,7 @@
 import * as pulumi from '@pulumi/pulumi';
 import getVaultProvider from './utils/hashicorp-vault.js';
 import { createArpanrecGitHubRepo } from './arpanrec.js';
+import 'dotenv/config';
 
 const project = pulumi.getProject();
 const stack = pulumi.getStack();

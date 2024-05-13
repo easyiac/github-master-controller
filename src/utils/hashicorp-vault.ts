@@ -1,16 +1,6 @@
 import * as vault from '@pulumi/vault';
-import fs from 'fs';
 
 function getVaultProvider(): vault.Provider {
-    const envfile = fs.readFileSync('.env', 'utf8');
-
-    const envs = envfile.split('\n');
-
-    envs.forEach((env) => {
-        const [key, value] = env.split('=');
-        process.env[key] = value;
-    });
-
     const vaultSource = new vault.Provider('vault-source', {
         address: process.env.VAULT_ADDR || '',
         token: 'bug',
