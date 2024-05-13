@@ -1,3 +1,10 @@
+## [2.3.7](https://github.com/arpanrec/github-master-controller/compare/2.3.6...2.3.7) (2024-05-13)
+
+
+### Bug Fixes
+
+* Deploy Pulumi Github Actions ([c2ee347](https://github.com/arpanrec/github-master-controller/commit/c2ee347891dc1e2792f90041a1ba76e92fc792a6))
+
 ## [2.3.6](https://github.com/arpanrec/github-master-controller/compare/2.3.5...2.3.6) (2024-05-13)
 
 
