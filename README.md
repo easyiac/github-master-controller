@@ -1,3 +1,3 @@
-# Github Master Control Program
+# GitHub Master Controller
 
 ## Description
