@@ -1,3 +1,10 @@
+## [2.3.2](https://github.com/arpanrec/github-master-controller/compare/2.3.1...2.3.2) (2024-05-13)
+
+
+### Bug Fixes
+
+* semantic-release/npm ([bbcc267](https://github.com/arpanrec/github-master-controller/commit/bbcc267412f597664aa64210ffc1c848490f054a))
+
 ## [2.3.1](https://github.com/arpanrec/github-master-controller/compare/2.3.0...2.3.1) (2024-05-13)
 
 
