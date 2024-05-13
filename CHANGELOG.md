@@ -1,3 +1,10 @@
+## [2.3.8](https://github.com/arpanrec/github-master-controller/compare/2.3.7...2.3.8) (2024-05-13)
+
+
+### Bug Fixes
+
+* add repos ([a7acd0a](https://github.com/arpanrec/github-master-controller/commit/a7acd0a61f58e32f01e23e8457840201222ee74d))
+
 ## [2.3.7](https://github.com/arpanrec/github-master-controller/compare/2.3.6...2.3.7) (2024-05-13)
 
 
