@@ -3,9 +3,7 @@ import * as github from '@pulumi/github';
 import * as pulumi from '@pulumi/pulumi';
 import { GitHubRepoOptions, createGitRepo } from './utils/github-repo.js';
 
-const owner = 'arpanrec';
-
-async function makeGitHubProvider(vaultSourceProvider: vault.Provider): Promise<github.Provider> {
+async function makeGitHubProvider(vaultSourceProvider: vault.Provider, vaultSourceProviderId: string) {
     const arpanrecGitHubKV2 = await vault.kv.getSecretV2(
         {
             name: 'external_services/github',
@@ -13,20 +11,20 @@ async function makeGitHubProvider(vaultSourceProvider: vault.Provider): Promise<
         },
         { provider: vaultSourceProvider }
     );
-    return new github.Provider(owner + 'github-provider', {
-        owner: owner,
+    return new github.Provider(`arpanrec-github-provider-${vaultSourceProviderId}`, {
+        owner: 'arpanrec',
         token: arpanrecGitHubKV2.data.GH_PROD_API_TOKEN,
     });
 }
 
-export async function createArpanrecGitHubRepo(vaultSourceProvider: vault.Provider) {
+export async function createArpanrecGitHubRepo(vaultSourceProvider: vault.Provider, vaultSourceProviderId: string) {
     const vaultHost = vaultSourceProvider.address.apply((addr) => {
         const url = new URL(addr);
         return url.hostname;
     });
 
     const vaultClientSecret = new vault.pkisecret.SecretBackendCert(
-        `vault-github-client-cert-${owner}`,
+        `vault-github-client-cert-arpanrec-${vaultSourceProviderId}`,
         {
             backend: 'pki',
             commonName: vaultHost,
@@ -34,6 +32,7 @@ export async function createArpanrecGitHubRepo(vaultSourceProvider: vault.Provid
         },
         {
             provider: vaultSourceProvider,
+            dependsOn: [vaultSourceProvider],
         }
     );
 
@@ -52,7 +51,7 @@ export async function createArpanrecGitHubRepo(vaultSourceProvider: vault.Provid
     });
 
     const approleSecretID = new vault.approle.AuthBackendRoleSecretId(
-        `vault-github-approle-${owner}`,
+        `vault-github-approle-arpanrec-${vaultSourceProviderId}`,
         {
             backend: 'approle',
             roleName: 'github-master-controller',
@@ -62,6 +61,7 @@ export async function createArpanrecGitHubRepo(vaultSourceProvider: vault.Provid
         },
         {
             provider: vaultSourceProvider,
+            dependsOn: [vaultSourceProvider],
         }
     );
 
@@ -72,6 +72,7 @@ export async function createArpanrecGitHubRepo(vaultSourceProvider: vault.Provid
         },
         {
             provider: vaultSourceProvider,
+            async: true,
         }
     );
 
@@ -103,11 +104,17 @@ export async function createArpanrecGitHubRepo(vaultSourceProvider: vault.Provid
         licenseTemplate: 'mit',
         actionSecrets: actionSecrets,
         allowAutoMerge: false,
+        archiveOnDestroy: false,
+        hasDownloads: true,
+        homepageUrl: 'https://github.com',
+        ignoreVulnerabilityAlertsDuringRead: false,
+        vulnerabilityAlerts: true,
     };
 
-    const gitHubProvider = await makeGitHubProvider(vaultSourceProvider);
-
-    const testRepoProp = JSON.parse(JSON.stringify(defaultRepoOptions)) as GitHubRepoOptions;
-    testRepoProp.description = 'This is the test repository';
-    createGitRepo('test-repo', testRepoProp, gitHubProvider, owner);
+    const gitHubProvider = await makeGitHubProvider(vaultSourceProvider, vaultSourceProviderId);
+    gitHubProvider.id.apply((gitHubProviderId) => {
+        const testRepoProp = JSON.parse(JSON.stringify(defaultRepoOptions)) as GitHubRepoOptions;
+        testRepoProp.description = 'This is the test repository';
+        createGitRepo('test-repo', testRepoProp, gitHubProvider, gitHubProviderId);
+    });
 }
