@@ -67,7 +67,6 @@ jobs:
               with:
                   command: preview
                   stack-name: arpanrec/production
-                  diff: true
               env:
                   PULUMI_ACCESS_TOKEN: ${{ steps.import-secrets.outputs.PULUMI_PROD_PAT }}
               if: github.ref != 'refs/heads/main'
@@ -76,7 +75,6 @@ jobs:
               uses: pulumi/actions@v5
               with:
                   command: up
-                  diff: true
                   stack-name: arpanrec/production
               env:
                   PULUMI_ACCESS_TOKEN: ${{ steps.import-secrets.outputs.PULUMI_PROD_PAT }}
