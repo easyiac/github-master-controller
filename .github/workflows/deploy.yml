@@ -50,7 +50,6 @@ jobs:
                   cache: "npm"
 
             - name: Install dependencies
-                  we need to install the dependencies also
               run: npm install
 
             - name: Install Pulumi CLI
