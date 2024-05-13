@@ -1,3 +1,10 @@
+## [2.3.3](https://github.com/arpanrec/github-master-controller/compare/2.3.2...2.3.3) (2024-05-13)
+
+
+### Bug Fixes
+
+* Change Name ([0da8d75](https://github.com/arpanrec/github-master-controller/commit/0da8d75d469850289045244a4e025d7df8476084))
+
 ## [2.3.2](https://github.com/arpanrec/github-master-controller/compare/2.3.1...2.3.2) (2024-05-13)
 
 
