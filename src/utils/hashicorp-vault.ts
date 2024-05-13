@@ -9,6 +9,30 @@ function getVaultProvider(resourceUniqueIdPrefix: string): vault.Provider {
         fs.mkdirSync(vaultCertDir, { recursive: true });
     }
 
+    if (!process.env.VAULT_ADDR) {
+        throw new Error('Missing required environment variable: VAULT_ADDR');
+    }
+
+    if (!process.env.VAULT_CLIENT_CERTIFICATE) {
+        throw new Error('Missing required environment variable: VAULT_CLIENT_CERTIFICATE');
+    }
+
+    if (!process.env.VAULT_CLIENT_PRIVATE_KEY) {
+        throw new Error('Missing required environment variable: VAULT_CLIENT_PRIVATE_KEY');
+    }
+
+    if (!process.env.VAULT_APPROLE_ROLE_ID) {
+        throw new Error('Missing required environment variable: VAULT_APPROLE_ROLE_ID');
+    }
+
+    if (!process.env.VAULT_APPROLE_SECRET_ID) {
+        throw new Error('Missing required environment variable: VAULT_APPROLE_SECRET_ID');
+    }
+
+    if (!process.env.ROOT_CA_CERTIFICATE) {
+        throw new Error('Missing required environment variable: ROOT_CA_CERTIFICATE');
+    }
+
     const certfiles: Record<string, string> = {
         'client_certificate.pem': process.env.VAULT_CLIENT_CERTIFICATE || '',
         'client_private_key.pem': process.env.VAULT_CLIENT_PRIVATE_KEY || '',

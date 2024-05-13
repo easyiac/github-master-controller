@@ -10,8 +10,8 @@ async function createGitHubRepos(vaultSourceProvider: vault.Provider, resourceUn
         visibility: 'public',
         archived: false,
         hasIssues: true,
-        hasProjects: true,
-        hasWiki: true,
+        hasProjects: false,
+        hasWiki: false,
         isTemplate: false,
         allowMergeCommit: false,
         allowRebaseMerge: false,
@@ -21,7 +21,6 @@ async function createGitHubRepos(vaultSourceProvider: vault.Provider, resourceUn
         gitignoreTemplate: 'Node',
         topics: ['pulumi-managed'],
         defaultBranch: 'main',
-        licenseTemplate: 'mit',
         actionSecrets: await createSecrets(vaultSourceProvider, resourceUniqueIdPrefix),
         allowAutoMerge: false,
         archiveOnDestroy: false,
@@ -57,9 +56,13 @@ async function createGitHubRepos(vaultSourceProvider: vault.Provider, resourceUn
         token: gitHubKV2.data.GH_PROD_API_TOKEN,
     });
 
-    const testRepoProp = { ...defaultRepoOptions } as GitHubRepoOptions;
-    testRepoProp.description = 'This is the test repository';
-    createGitRepo('test-repo', testRepoProp, gitHubProvider, `test-repo-${resourceUniqueIdPrefix}`);
+    const dotfilesRepoProp = { ...defaultRepoOptions } as GitHubRepoOptions;
+    dotfilesRepoProp.description = 'My Dot Files';
+    createGitRepo('dotfiles', dotfilesRepoProp, gitHubProvider, `dotfiles-${resourceUniqueIdPrefix}`);
+
+    const nebulaRepoProp = { ...defaultRepoOptions } as GitHubRepoOptions;
+    nebulaRepoProp.description = 'Ansible Collection Nebula';
+    createGitRepo('arpanrec.nebula', nebulaRepoProp, gitHubProvider, `arpanrec.nebula-${resourceUniqueIdPrefix}`);
 }
 
 export { createGitHubRepos };
