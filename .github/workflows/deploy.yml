@@ -1,5 +1,5 @@
 ---
-name: Deplay Pulumi Github Actions
+name: Deploy Pulumi Github Actions
 "on":
     push:
     pull_request:
