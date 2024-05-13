@@ -55,7 +55,7 @@ jobs:
             - name: Install node dependencies
               run: |+
                   set -ex
-                  npm i
+                  npm i --include dev
 
             - name: Release
               run: |+
