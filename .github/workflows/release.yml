@@ -13,6 +13,15 @@ jobs:
             issues: write
             pull-requests: write
             id-token: write
+            actions: write
+            deployments: write
+            checks: write
+            discussions: write
+            packages: write
+            pages: write
+            repository-projects: write
+            security-events: write
+            statuses: write
         name: Release
         runs-on: ubuntu-latest
         steps:
