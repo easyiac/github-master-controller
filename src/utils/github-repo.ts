@@ -26,6 +26,7 @@ type GitHubRepoOptions = {
     ignoreVulnerabilityAlertsDuringRead?: boolean;
     vulnerabilityAlerts?: boolean;
     collaborators: Record<string, string>;
+    protectDefaultBranch: boolean;
 };
 
 function createGitRepo(
@@ -99,34 +100,36 @@ function createGitRepo(
         }
     );
 
-    new github.BranchProtection(
-        `branch-protection-${defaultBranch}-${resourceUniqueIdPrefix}`,
-        {
-            repositoryId: gitHubRepoResource.nodeId,
-            pattern: defaultBranchResource.branch,
-            enforceAdmins: false,
-            allowsDeletions: false,
-            requireSignedCommits: true,
-            requireConversationResolution: true,
-            requiredLinearHistory: true,
-            requiredStatusChecks: [
-                {
-                    strict: true,
-                },
-            ],
-            requiredPullRequestReviews: [
-                {
-                    dismissStaleReviews: true,
-                    restrictDismissals: false,
-                    requiredApprovingReviewCount: 0,
-                },
-            ],
-        },
-        {
-            provider: provider,
-            dependsOn: [defaultBranchResource],
-        }
-    );
+    if (options.protectDefaultBranch) {
+        new github.BranchProtection(
+            `branch-protection-${defaultBranch}-${resourceUniqueIdPrefix}`,
+            {
+                repositoryId: gitHubRepoResource.nodeId,
+                pattern: defaultBranchResource.branch,
+                enforceAdmins: false,
+                allowsDeletions: false,
+                requireSignedCommits: true,
+                requireConversationResolution: true,
+                requiredLinearHistory: true,
+                requiredStatusChecks: [
+                    {
+                        strict: true,
+                    },
+                ],
+                requiredPullRequestReviews: [
+                    {
+                        dismissStaleReviews: true,
+                        restrictDismissals: false,
+                        requiredApprovingReviewCount: 0,
+                    },
+                ],
+            },
+            {
+                provider: provider,
+                dependsOn: [defaultBranchResource],
+            }
+        );
+    }
 
     new github.BranchProtection(
         `branch-protection-backup-${resourceUniqueIdPrefix}`,

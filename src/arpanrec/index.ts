@@ -95,6 +95,7 @@ async function createGitHubRepos(vaultSourceProvider: vault.Provider, resourceUn
         ignoreVulnerabilityAlertsDuringRead: false,
         vulnerabilityAlerts: true,
         collaborators: {},
+        protectDefaultBranch: false,
     };
 
     const gitHubKV2 = await vault.kv.getSecretV2(
@@ -121,7 +122,7 @@ async function createGitHubRepos(vaultSourceProvider: vault.Provider, resourceUn
         token: gitHubKV2.data.GH_PROD_API_TOKEN,
     });
 
-    const testRepoProp = JSON.parse(JSON.stringify(defaultRepoOptions)) as GitHubRepoOptions;
+    const testRepoProp = { ...defaultRepoOptions } as GitHubRepoOptions;
     testRepoProp.description = 'This is the test repository';
     createGitRepo('test-repo', testRepoProp, gitHubProvider, `test-repo-${resourceUniqueIdPrefix}`);
 }
