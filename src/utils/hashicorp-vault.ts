@@ -25,7 +25,7 @@ function getVaultProvider(resourceUniqueIdPrefix: string): vault.Provider {
 
     const vaultSource = new vault.Provider(`vault-${resourceUniqueIdPrefix}`, {
         address: process.env.VAULT_ADDR || '',
-        token: 'bug',
+        token: 'bug', // not needed but it's marked mandatory in the type definition
         clientAuth: {
             certFile: path.join(vaultCertDir, 'client_certificate.pem'),
             keyFile: path.join(vaultCertDir, 'client_private_key.pem'),

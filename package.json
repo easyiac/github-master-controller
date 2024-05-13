@@ -17,6 +17,7 @@
         "@semantic-release/git": "^10.0.1",
         "@semantic-release/release-notes-generator": "^13.0.0",
         "@types/node": "^18",
+        "eslint": "^9.2.0",
         "semantic-release": "^23.0.8"
     }
 }

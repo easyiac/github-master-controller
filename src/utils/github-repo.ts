@@ -157,6 +157,18 @@ function createGitRepo(
         });
     }
 
+    new github.RepositoryEnvironment(
+        `repository-environment-production-${resourceUniqueIdPrefix}`,
+        {
+            environment: 'production',
+            repository: gitHubRepoResource.name,
+        },
+        {
+            provider: provider,
+            dependsOn: [gitHubRepoResource],
+        }
+    );
+
     return gitHubRepoResource;
 }
 
