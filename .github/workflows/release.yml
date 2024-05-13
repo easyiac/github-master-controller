@@ -46,6 +46,11 @@ jobs:
                   git_commit_gpgsign: true
                   trust_level: 5
 
+            - name: Install node dependencies
+              run: |+
+                  set -ex
+                  npm i
+
             - name: Setup Node
               uses: actions/setup-node@v4
               with:
