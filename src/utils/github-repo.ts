@@ -1,7 +1,7 @@
 import * as github from '@pulumi/github';
 import * as pulumi from '@pulumi/pulumi';
 
-export type GitHubRepoOptions = {
+type GitHubRepoOptions = {
     description?: string;
     visibility?: string;
     archived?: boolean;
@@ -27,13 +27,12 @@ export type GitHubRepoOptions = {
     vulnerabilityAlerts?: boolean;
 };
 
-export function createGitRepo(
+function createGitRepo(
     repositoryName: string,
     options: GitHubRepoOptions,
     provider: github.Provider,
     resourceUniqueIdPrefix: string
 ): github.Repository {
-    
     let defaultBranch = options.defaultBranch || 'main';
     const gitHubRepoResource = new github.Repository(
         `repository-${resourceUniqueIdPrefix}`,
@@ -63,7 +62,6 @@ export function createGitRepo(
         },
         { provider: provider }
     );
-    const resourceUniqueIdPrefixRepository = `${repositoryName}-${resourceUniqueIdPrefix}`;
 
     let mainBranchFound = false;
 
@@ -75,7 +73,7 @@ export function createGitRepo(
         });
         if (!mainBranchFound) {
             new github.Branch(
-                `branch-${defaultBranch}-${resourceUniqueIdPrefixRepository}`,
+                `branch-${defaultBranch}-${resourceUniqueIdPrefix}`,
                 {
                     repository: gitHubRepoResource.name,
                     branch: defaultBranch,
@@ -89,7 +87,7 @@ export function createGitRepo(
     });
 
     const defaultBranchResource = new github.BranchDefault(
-        `default-branch-${defaultBranch}-${resourceUniqueIdPrefixRepository}`,
+        `default-branch-${defaultBranch}-${resourceUniqueIdPrefix}`,
         {
             repository: gitHubRepoResource.name,
             branch: defaultBranch,
@@ -101,7 +99,7 @@ export function createGitRepo(
     );
 
     new github.BranchProtection(
-        `branch-protection-${defaultBranch}-${resourceUniqueIdPrefixRepository}`,
+        `branch-protection-${defaultBranch}-${resourceUniqueIdPrefix}`,
         {
             repositoryId: gitHubRepoResource.nodeId,
             pattern: defaultBranchResource.branch,
@@ -129,7 +127,7 @@ export function createGitRepo(
     );
 
     new github.BranchProtection(
-        `branch-protection-backup-${resourceUniqueIdPrefixRepository}`,
+        `branch-protection-backup-${resourceUniqueIdPrefix}`,
         {
             repositoryId: gitHubRepoResource.nodeId,
             pattern: 'backup/**',
@@ -145,7 +143,7 @@ export function createGitRepo(
     if (Object.keys(options.actionSecrets).length > 0) {
         Object.keys(options.actionSecrets).forEach((key) => {
             new github.ActionsSecret(
-                `action-secret-${key}-${resourceUniqueIdPrefixRepository}`,
+                `action-secret-${key}-${resourceUniqueIdPrefix}`,
                 {
                     repository: gitHubRepoResource.name,
                     secretName: key,
@@ -161,3 +159,5 @@ export function createGitRepo(
 
     return gitHubRepoResource;
 }
+
+export { createGitRepo, GitHubRepoOptions };

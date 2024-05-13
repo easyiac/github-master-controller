@@ -9,5 +9,5 @@ if (stack !== 'production') {
     process.exit(1);
 }
 
-const vaultSource = getVaultProvider('vaultSource');
-await createGitHubRepos(vaultSource, 'arpanrec-vaultSource');
+const vaultSource = getVaultProvider('vault');
+await createGitHubRepos(vaultSource, 'arpanrec-vault');
