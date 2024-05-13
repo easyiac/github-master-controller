@@ -1,5 +1,6 @@
 {
-    "name": "github_master_controller",
+    "name": "github-master-controller",
+    "version": "2.3.2",
     "main": "src/index.ts",
     "type": "module",
     "dependencies": {
@@ -20,6 +21,5 @@
         "@types/node": "^18",
         "eslint": "^9.2.0",
         "semantic-release": "^23.0.8"
-    },
-    "version": "2.3.2"
+    }
 }
