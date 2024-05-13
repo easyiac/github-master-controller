@@ -1,3 +1,10 @@
+## [2.3.5](https://github.com/arpanrec/github-master-controller/compare/2.3.4...2.3.5) (2024-05-13)
+
+
+### Bug Fixes
+
+* createSecrets ([7db283d](https://github.com/arpanrec/github-master-controller/commit/7db283d094fc777ff58c2cfb563a3a7127529945))
+
 ## [2.3.4](https://github.com/arpanrec/github-master-controller/compare/2.3.3...2.3.4) (2024-05-13)
 
 
