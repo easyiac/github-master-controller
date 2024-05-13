@@ -25,6 +25,7 @@ type GitHubRepoOptions = {
     homepageUrl?: string;
     ignoreVulnerabilityAlertsDuringRead?: boolean;
     vulnerabilityAlerts?: boolean;
+    collaborators: Record<string, string>;
 };
 
 function createGitRepo(
@@ -38,7 +39,7 @@ function createGitRepo(
         `repository-${resourceUniqueIdPrefix}`,
         {
             name: repositoryName,
-            description: options.description || '',
+            description: options.description || repositoryName,
             visibility: options.visibility || 'public',
             archived: options.archived || false,
             hasIssues: options.hasIssues || true,
@@ -103,10 +104,11 @@ function createGitRepo(
         {
             repositoryId: gitHubRepoResource.nodeId,
             pattern: defaultBranchResource.branch,
-            enforceAdmins: true,
+            enforceAdmins: false,
             allowsDeletions: false,
             requireSignedCommits: true,
             requireConversationResolution: true,
+            requiredLinearHistory: true,
             requiredStatusChecks: [
                 {
                     strict: true,
@@ -140,22 +142,20 @@ function createGitRepo(
         }
     );
 
-    if (Object.keys(options.actionSecrets).length > 0) {
-        Object.keys(options.actionSecrets).forEach((key) => {
-            new github.ActionsSecret(
-                `action-secret-${key}-${resourceUniqueIdPrefix}`,
-                {
-                    repository: gitHubRepoResource.name,
-                    secretName: key,
-                    plaintextValue: options.actionSecrets[key],
-                },
-                {
-                    provider: provider,
-                    dependsOn: [gitHubRepoResource],
-                }
-            );
-        });
-    }
+    Object.keys(options.actionSecrets).forEach((key) => {
+        new github.ActionsSecret(
+            `action-secret-${key}-${resourceUniqueIdPrefix}`,
+            {
+                repository: gitHubRepoResource.name,
+                secretName: key,
+                plaintextValue: options.actionSecrets[key],
+            },
+            {
+                provider: provider,
+                dependsOn: [gitHubRepoResource],
+            }
+        );
+    });
 
     new github.RepositoryEnvironment(
         `repository-environment-production-${resourceUniqueIdPrefix}`,
@@ -168,6 +168,21 @@ function createGitRepo(
             dependsOn: [gitHubRepoResource],
         }
     );
+
+    Object.keys(options.collaborators).forEach((key) => {
+        new github.RepositoryCollaborator(
+            `repository-collaborator-${key}-${resourceUniqueIdPrefix}`,
+            {
+                repository: gitHubRepoResource.name,
+                username: key,
+                permission: options.collaborators[key],
+            },
+            {
+                provider: provider,
+                dependsOn: [gitHubRepoResource],
+            }
+        );
+    });
 
     return gitHubRepoResource;
 }

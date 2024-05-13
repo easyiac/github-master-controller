@@ -72,7 +72,6 @@ async function createGitHubRepos(vaultSourceProvider: vault.Provider, resourceUn
     };
 
     const defaultRepoOptions: GitHubRepoOptions = {
-        description: 'This is the default repository',
         visibility: 'public',
         archived: false,
         hasIssues: true,
@@ -95,6 +94,7 @@ async function createGitHubRepos(vaultSourceProvider: vault.Provider, resourceUn
         homepageUrl: 'https://github.com',
         ignoreVulnerabilityAlertsDuringRead: false,
         vulnerabilityAlerts: true,
+        collaborators: {},
     };
 
     const gitHubKV2 = await vault.kv.getSecretV2(
@@ -104,6 +104,17 @@ async function createGitHubRepos(vaultSourceProvider: vault.Provider, resourceUn
         },
         { provider: vaultSourceProvider }
     );
+
+    const botUserRes = await fetch('https://api.github.com/user', {
+        headers: {
+            Authorization: `token ${gitHubKV2.data.GH_BOT_API_TOKEN}`,
+            Accept: 'application/vnd.github.v3+json',
+        },
+    });
+
+    const botUser = await botUserRes.json();
+
+    defaultRepoOptions.collaborators[botUser.login] = 'admin';
 
     const gitHubProvider = new github.Provider(`github-provider-${resourceUniqueIdPrefix}`, {
         owner: 'arpanrec',

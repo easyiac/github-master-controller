@@ -45,7 +45,7 @@ jobs:
                   node-version: "20"
                   cache: "npm"
 
-            - name: After setting up the Pulumi project specific language environment,
+            - name: Install dependencies
                   we need to install the dependencies also
               run: npm install
 
@@ -64,13 +64,16 @@ jobs:
               with:
                   command: preview
                   stack-name: arpanrec/production
+                  diff: true
               env:
                   PULUMI_ACCESS_TOKEN: ${{ steps.import-secrets.outputs.PULUMI_PROD_PAT }}
+              if: github.ref != 'refs/heads/main'
 
             - name: Pulumi up
               uses: pulumi/actions@v5
               with:
                   command: up
+                  diff: true
                   stack-name: arpanrec/production
               env:
                   PULUMI_ACCESS_TOKEN: ${{ steps.import-secrets.outputs.PULUMI_PROD_PAT }}
