@@ -1,3 +1,10 @@
+## [2.3.6](https://github.com/arpanrec/github-master-controller/compare/2.3.5...2.3.6) (2024-05-13)
+
+
+### Bug Fixes
+
+* no diff ([4cbc510](https://github.com/arpanrec/github-master-controller/commit/4cbc51088931fcb68fc630e92d3c928ccba093f4))
+
 ## [2.3.5](https://github.com/arpanrec/github-master-controller/compare/2.3.4...2.3.5) (2024-05-13)
 
 
