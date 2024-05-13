@@ -84,7 +84,6 @@ export function createGitRepo(
                 mainBranchFound = true;
             }
         });
-        console.log('Main branch found: ' + mainBranchFound);
         if (!mainBranchFound) {
             new github.Branch(
                 `branch-${owner}-${repositoryName}-${defaultBranch}`,
