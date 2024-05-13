@@ -1,3 +1,10 @@
+## [2.3.4](https://github.com/arpanrec/github-master-controller/compare/2.3.3...2.3.4) (2024-05-13)
+
+
+### Bug Fixes
+
+* Install dependencies ([a648e5a](https://github.com/arpanrec/github-master-controller/commit/a648e5a1892f58177c5b7222d656813e701db9bd))
+
 ## [2.3.3](https://github.com/arpanrec/github-master-controller/compare/2.3.2...2.3.3) (2024-05-13)
 
 
